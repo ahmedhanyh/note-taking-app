@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 
+{% block link %} <link rel="stylesheet" href={{url_for('static', filename='style.css')
+}}> {% endblock %}
+
 {% block title %}Homepage{% endblock %}
 
-{% block body %}<h1>Hello, World!</h1>{% endblock %}
+{% block body %}
+    <div class="closed-note">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+{% endblock %}
