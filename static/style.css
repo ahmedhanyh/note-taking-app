@@ -18,37 +18,10 @@ section {
     gap: 6vh;
 }
 
-#notes-grid {
+#notes-cards {
     display: grid;
-    grid-template-columns: repeat(4, 10vw);
+    grid-template-columns: repeat(4, 18rem);
     grid-auto-rows: 20vh;
-    column-gap: 120px;
+    column-gap: 60px;
     row-gap: 60px;
-}
-
-.closed-note {
-    border: 2px solid #767676;
-    border-radius: 4px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    box-shadow: -4px 4px 7px #a6a6a6;
-    transition: all 0.2s;
-    cursor: pointer;
-}
-
-.closed-note:hover {
-    transform: scale(1.01);
-}
-
-.closed-note div {
-    width: 70%;
-    height: 1px;
-    background-color: #767676;
-}
-
-.note-title {
-    font-size: 28px;
-    border-bottom: 1px solid #767676;
 }
