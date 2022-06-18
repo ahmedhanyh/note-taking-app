@@ -12,10 +12,19 @@ body {
 
 section {
     margin: 6vh 0;
+    padding: 0 4vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6vh;
+}
+
+#new-note-form {
+    width: 50%;
+}
+
+#new-note-form-btns {
+    text-align: center;
 }
 
 #notes-cards {
