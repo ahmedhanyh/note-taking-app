@@ -1,7 +1,15 @@
 import sqlite3
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, session
+from flask_session import Session
 from flask_cors import CORS
 from werkzeug.security import check_password_hash, generate_password_hash
+
+app = Flask(__name__);
+CORS(app)
+
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 connection = sqlite3.connect(":memory:", check_same_thread=False)
 cursor = connection.cursor()
@@ -42,10 +50,6 @@ def edit_note(id, title, content):
 def delete_note(id):
     with connection:
         cursor.execute("DELETE FROM notes WHERE id = ?", (id,))
-
-app = Flask(__name__);
-app.config['SECRET_KEY'] = 'my_secret_key'
-CORS(app)
 
 @app.route("/")
 def index():
@@ -130,7 +134,7 @@ def register():
             cursor.execute("INSERT INTO users(username, hash) values(?, ?)", (username, generate_password_hash(password)))
 
             # Log the user in and remember him
-            # session["user_id"] = db.execute("SELECT * FROM users WHERE username = ?", username)[0]["id"]
+            session["user_id"] = cursor.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()[0]
 
             # Flash message the user upon successful registration
             flash("Registration successful!")
@@ -146,7 +150,7 @@ def login():
     """Log user in"""
 
     # Forget any user_id
-    # session.clear()
+    session.clear()
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
@@ -169,8 +173,8 @@ def login():
             flash("invalid username and/or password")
 
         else:
-            # # Remember which user has logged in
-            # session["user_id"] = rows[0]["id"]
+            # Remember which user has logged in
+            session["user_id"] = rows[0][0]
 
             # Flash message the user if logged in successfully
             flash("You logged in successfully!")
