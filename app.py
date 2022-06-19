@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, flash, session
 from flask_session import Session
 from flask_cors import CORS
 from werkzeug.security import check_password_hash, generate_password_hash
+from functools import wraps
 
 app = Flask(__name__);
 CORS(app)
@@ -51,12 +52,27 @@ def delete_note(id):
     with connection:
         cursor.execute("DELETE FROM notes WHERE id = ?", (id,))
 
+def login_required(f):
+    """
+    Decorate routes to require login.
+
+    https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("user_id") is None:
+            return redirect("/login")
+        return f(*args, **kwargs)
+    return decorated_function
+
 @app.route("/")
+@login_required
 def index():
     notes = get_notes()
     return render_template("index.html", notes=notes)
 
 @app.route("/add", methods=["GET", "POST"])
+@login_required
 def add():
     if request.method == "POST":
         title = request.form.get("title")
@@ -74,11 +90,13 @@ def add():
     return render_template("add.html")
 
 @app.route("/view/<int:note_id>")
+@login_required
 def view(note_id):
     note = get_note(note_id)
     return render_template("view.html", note=note)
 
 @app.route("/edit/<int:note_id>", methods=["GET", "POST"])
+@login_required
 def edit(note_id):
     if request.method == "POST":
         title = request.form.get("title")
@@ -97,6 +115,7 @@ def edit(note_id):
     return render_template("edit.html", note=note)
 
 @app.route("/delete/<int:note_id>")
+@login_required
 def delete(note_id):
     delete_note(note_id)
     flash("Note deleted successfully!")
@@ -169,8 +188,8 @@ def login():
         rows = cursor.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchall()
 
         # Ensure username exists and password is correct
-        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], password):
-            flash("invalid username and/or password")
+        if len(rows) != 1 or not check_password_hash(rows[0][2], password):
+            flash("Invalid username and/or password")
 
         else:
             # Remember which user has logged in
@@ -184,3 +203,8 @@ def login():
 
     # User reached route via GET (as by clicking a link or via redirect)
     return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/login")
