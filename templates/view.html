@@ -2,6 +2,12 @@
 
 {% block title %}{{ note[1] }}{% endblock %}
 
+{% block navlinks %}
+    <div class="d-flex">
+        <a class="nav-link" aria-current="page" href="/logout">Logout</a>
+    </div>
+{% endblock %}
+
 {% block content %}
 <div class="card view">
     <div class="card-body">

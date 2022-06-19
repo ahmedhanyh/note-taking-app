@@ -2,6 +2,12 @@
 
 {% block title %}Homepage{% endblock %}
 
+{% block navlinks %}
+    <div class="d-flex">
+        <a class="nav-link" aria-current="page" href="/logout">Logout</a>
+    </div>
+{% endblock %}
+
 {% block content %}
     <a href="/add" id="add-note-btn" type="button" class="btn btn-primary btn-lg">Add a Note</a>
 

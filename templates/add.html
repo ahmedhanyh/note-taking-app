@@ -2,6 +2,12 @@
 
 {% block title %}Create a new note{% endblock %}
 
+{% block navlinks %}
+    <div class="d-flex">
+        <a class="nav-link" aria-current="page" href="/logout">Logout</a>
+    </div>
+{% endblock %}
+
 {% block content %}
     <form class="note-form" action="/add" method="post">
         <input type="text" class="form-control mb-3" name="title" placeholder="Title"

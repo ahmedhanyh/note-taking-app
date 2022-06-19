@@ -4,6 +4,13 @@
     Login
 {% endblock %}
 
+{% block navlinks %}
+    <div class="d-flex">
+        <a class="nav-link" aria-current="page" href="/login">Login</a>
+        <a class="nav-link" aria-current="page" href="/register">Register</a>
+    </div>
+{% endblock %}
+
 {% block content %}
     <form action="/login" method="post" style="text-align: center;">
         <input type="text" class="form-control mb-3" name="username" placeholder="Username"
