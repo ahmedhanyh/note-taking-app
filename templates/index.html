@@ -17,7 +17,7 @@
             <h6 class="card-subtitle mb-2 text-muted">{{ note[3] }}</h6>
             <p class="card-text index">{{ note[2] }}</p>
             <a href={{ "/view/{}".format(note[0]) }} class="card-link">View</a>
-            <a href="#" class="card-link">Edit</a>
+            <a href={{ "/edit/{}".format(note[0]) }} class="card-link">Edit</a>
             <a href={{ "/delete/{}".format(note[0]) }} class="card-link">Delete</a>
             </div>
         </div>
