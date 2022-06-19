@@ -84,7 +84,6 @@ def edit(note_id):
     note = get_note(note_id)
     return render_template("edit.html", note=note)
 
-
 @app.route("/delete/<int:note_id>")
 def delete(note_id):
     delete_note(note_id)
@@ -107,8 +106,8 @@ def register():
             flash("Please choose a username")
 
         # Ensure username does not already exist
-        # elif len(cursor.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchall()) == 1:
-        #     flash("Username already taken. Please choose a different username.")
+        elif len(cursor.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchall()) == 1:
+            flash("Username already taken. Please choose a different username.")
 
         # Ensure password was submitted
         elif not password or not confirmation:
@@ -118,8 +117,8 @@ def register():
         elif password != confirmation:
             flash("Passwords do not match. Please re-enter the passwords and make sure they match")
 
-        # Insert the new user into the database
         else:
+            # Insert the new user into the database
             # cursor.execute("INSERT INTO users(username, hash) values(?, ?)", (username, password))
 
             # Log the user in and remember him
@@ -133,3 +132,43 @@ def register():
 
     # User reached route via GET (as by clicking a link or via redirect)
     return render_template("register.html")
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    """Log user in"""
+
+    # Forget any user_id
+    # session.clear()
+
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        # Ensure username was submitted
+        if not username:
+            flash("Username must be provided")
+
+        # Ensure password was submitted
+        elif not password:
+            flash("Password must be provided")
+
+        # Query database for username
+        # rows = cursor.execute("SELECT * FROM users WHERE username = ?", ("username",))
+
+        # # Ensure username exists and password is correct
+        # if len(rows) != 1 or not check_password_hash(rows[0]["hash"], password):
+        #     flash("invalid username and/or password")
+
+        else:
+            # # Remember which user has logged in
+            # session["user_id"] = rows[0]["id"]
+
+            # Flash message the user if logged in successfully
+            flash("You logged in successfully!")
+
+            # Redirect user to home page
+            return redirect("/")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    return render_template("login.html")
