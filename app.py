@@ -1,9 +1,30 @@
 import sqlite3
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, session
+from flask_session import Session
 from flask_cors import CORS
+from tempfile import mkdtemp
+from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
+from werkzeug.security import check_password_hash, generate_password_hash
+
+app = Flask(__name__);
+app.config['SECRET_KEY'] = 'my_secret_key'
+CORS(app)
+
+app.config["SESSION_FILE_DIR"] = mkdtemp()
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
+
 
 connection = sqlite3.connect(":memory:", check_same_thread=False)
 cursor = connection.cursor()
+
+cursor.execute("""CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    username TEXT,
+    password TEXT,
+)""")
+connection.commit()
 
 cursor.execute("""CREATE TABLE notes (
     id INTEGER PRIMARY KEY,
@@ -35,14 +56,14 @@ def delete_note(id):
     with connection:
         cursor.execute("DELETE FROM notes WHERE id = ?", (id,))
 
-app = Flask(__name__);
-app.config['SECRET_KEY'] = 'my_secret_key'
-CORS(app)
+
+
 
 @app.route("/")
 def index():
     notes = get_notes()
     return render_template("index.html", notes=notes)
+
 
 @app.route("/add", methods=["GET", "POST"])
 def add():
@@ -61,10 +82,12 @@ def add():
 
     return render_template("add.html")
 
+
 @app.route("/view/<int:note_id>")
 def view(note_id):
     note = get_note(note_id)
     return render_template("view.html", note=note)
+
 
 @app.route("/edit/<int:note_id>", methods=["GET", "POST"])
 def edit(note_id):
