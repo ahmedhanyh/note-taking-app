@@ -19,18 +19,24 @@ section {
     gap: 6vh;
 }
 
-#new-note-form {
+#add-note-form {
     width: 50%;
 }
 
-#new-note-form-btns {
+#add-note-form-btns {
     text-align: center;
 }
 
 #notes-cards {
     display: grid;
     grid-template-columns: repeat(4, 18rem);
-    grid-auto-rows: 20vh;
+    grid-auto-rows: 16vh;
     column-gap: 60px;
     row-gap: 60px;
+}
+
+.card-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
