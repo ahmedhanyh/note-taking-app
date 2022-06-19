@@ -13,7 +13,7 @@
         <textarea class="form-control mb-3" id="content" name="content" rows="10" placeholder="Write something...">{{ request.form.get("content") if request.form.get("content") else "" }}</textarea>
         <div id="add-note-form-btns">
             <button type="submit" class="btn btn-primary">Submit</button>
-            <button type="submit" class="btn btn-danger">Cancel</button>
+            <!-- <button type="submit" class="btn btn-danger">Cancel</button> -->
         </div>
     </form>
 {% endblock %}
