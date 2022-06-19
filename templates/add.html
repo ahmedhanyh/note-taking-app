@@ -1,19 +1,13 @@
 {% extends "layout.html" %}
 
-{% block link %}
-    <link rel="stylesheet" href={{ url_for('static', filename='style.css') }}>
-{% endblock %}
-
 {% block title %}Create a new note{% endblock %}
 
 {% block content %}
-    <form id="add-note-form" action="/add" method="post">
-        <input type="text" class="form-control mb-3" id="title" name="title" placeholder="Title"
+    <form class="note-form" action="/add" method="post">
+        <input type="text" class="form-control mb-3" name="title" placeholder="Title"
             value={{ request.form.get("title") if request.form.get("title") else "" }}>
-        <textarea class="form-control mb-3" id="content" name="content" rows="10" placeholder="Write something...">{{ request.form.get("content") if request.form.get("content") else "" }}</textarea>
-        <div id="add-note-form-btns">
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <!-- <button type="submit" class="btn btn-danger">Cancel</button> -->
-        </div>
+        <textarea class="form-control mb-3" name="content" rows="10" placeholder="Write something...">{{ request.form.get("content") if request.form.get("content") else "" }}</textarea>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <!-- <button type="submit" class="btn btn-danger">Cancel</button> -->
     </form>
 {% endblock %}

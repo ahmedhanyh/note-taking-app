@@ -1,26 +1,22 @@
 {% extends "layout.html" %}
 
-{% block link %}
-    <link rel="stylesheet" href={{ url_for('static', filename='style.css') }}>
-{% endblock %}
-
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
     <a href="/add" id="add-note-btn" type="button" class="btn btn-primary btn-lg">Add a Note</a>
 
-<div id="notes-cards">
-    {% for note in notes %}
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-            <h5 class="card-title">{{ note[1] }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{ note[3] }}</h6>
-            <p class="card-text index">{{ note[2] }}</p>
-            <a href={{ "/view/{}".format(note[0]) }} class="card-link">View</a>
-            <a href={{ "/edit/{}".format(note[0]) }} class="card-link">Edit</a>
-            <a href={{ "/delete/{}".format(note[0]) }} class="card-link">Delete</a>
+    <div id="notes-cards">
+        {% for note in notes %}
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                <h5 class="card-title">{{ note[1] }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ note[3] }}</h6>
+                <p class="card-text index">{{ note[2] }}</p>
+                <a href={{ "/view/{}".format(note[0]) }} class="card-link">View</a>
+                <a href={{ "/edit/{}".format(note[0]) }} class="card-link">Edit</a>
+                <a href={{ "/delete/{}".format(note[0]) }} class="card-link">Delete</a>
+                </div>
             </div>
-        </div>
-    {% endfor %}
-</div>
+        {% endfor %}
+    </div>
 {% endblock %}

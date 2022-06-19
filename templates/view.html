@@ -1,9 +1,5 @@
 {% extends "layout.html" %}
 
-{% block link %}
-    <link rel="stylesheet" href={{ url_for('static', filename='style.css') }}>
-{% endblock %}
-
 {% block title %}{{ note[1] }}{% endblock %}
 
 {% block content %}
