@@ -22,6 +22,10 @@ def get_notes():
     cursor.execute("SELECT * FROM notes")
     return cursor.fetchall()
 
+def delete_note(id):
+    with connection:
+        cursor.execute("DELETE FROM notes WHERE id = ?", (id,))
+
 app = Flask(__name__);
 app.config['SECRET_KEY'] = 'my_secret_key'
 CORS(app)
@@ -47,3 +51,9 @@ def new():
             return redirect("/")
 
     return render_template("add.html")
+
+@app.route("/delete/<int:note_id>")
+def delete(note_id):
+    delete_note(note_id)
+    flash("Note deleted successfully!")
+    return redirect("/")
