@@ -1,9 +1,17 @@
 import sqlite3
 from flask import Flask, render_template, request, redirect, flash
 from flask_cors import CORS
+from werkzeug.security import check_password_hash, generate_password_hash
 
 connection = sqlite3.connect(":memory:", check_same_thread=False)
 cursor = connection.cursor()
+
+cursor.execute("""CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    username TEXT UNIQUE NOT NULL,
+    hash TEXT NOT NULL
+)""")
+connection.commit()
 
 cursor.execute("""CREATE TABLE notes (
     id INTEGER PRIMARY KEY,
@@ -119,7 +127,7 @@ def register():
 
         else:
             # Insert the new user into the database
-            # cursor.execute("INSERT INTO users(username, hash) values(?, ?)", (username, password))
+            cursor.execute("INSERT INTO users(username, hash) values(?, ?)", (username, generate_password_hash(password)))
 
             # Log the user in and remember him
             # session["user_id"] = db.execute("SELECT * FROM users WHERE username = ?", username)[0]["id"]
@@ -154,11 +162,11 @@ def login():
             flash("Password must be provided")
 
         # Query database for username
-        # rows = cursor.execute("SELECT * FROM users WHERE username = ?", ("username",))
+        rows = cursor.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchall()
 
-        # # Ensure username exists and password is correct
-        # if len(rows) != 1 or not check_password_hash(rows[0]["hash"], password):
-        #     flash("invalid username and/or password")
+        # Ensure username exists and password is correct
+        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], password):
+            flash("invalid username and/or password")
 
         else:
             # # Remember which user has logged in
