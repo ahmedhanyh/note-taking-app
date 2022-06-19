@@ -35,8 +35,12 @@ section {
     row-gap: 60px;
 }
 
-.card-text {
+.card-text.index {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.card.view {
+    width: 60%;
 }

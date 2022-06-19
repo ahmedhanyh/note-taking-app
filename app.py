@@ -22,6 +22,10 @@ def get_notes():
     cursor.execute("SELECT * FROM notes")
     return cursor.fetchall()
 
+def get_note(id):
+    cursor.execute("SELECT * FROM notes WHERE id = ?", (id,))
+    return cursor.fetchone()
+
 def delete_note(id):
     with connection:
         cursor.execute("DELETE FROM notes WHERE id = ?", (id,))
@@ -36,7 +40,7 @@ def index():
     return render_template("index.html", notes=notes)
 
 @app.route("/add", methods=["GET", "POST"])
-def new():
+def add():
     if request.method == "POST":
         title = request.form.get("title")
         content = request.form.get("content")
@@ -51,6 +55,11 @@ def new():
             return redirect("/")
 
     return render_template("add.html")
+
+@app.route("/view/<int:note_id>")
+def view(note_id):
+    note = get_note(note_id)
+    return render_template("view.html", note=note)
 
 @app.route("/delete/<int:note_id>")
 def delete(note_id):
