@@ -90,3 +90,46 @@ def delete(note_id):
     delete_note(note_id)
     flash("Note deleted successfully!")
     return redirect("/")
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    """Register user"""
+
+    if request.method == "POST":
+
+        # Extract the username, password and its confirmation
+        username = request.form.get("username")
+        password = request.form.get("password")
+        confirmation = request.form.get("confirmation")
+
+        # Ensure username was submitted
+        if not username:
+            flash("Please choose a username")
+
+        # Ensure username does not already exist
+        # elif len(cursor.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchall()) == 1:
+        #     flash("Username already taken. Please choose a different username.")
+
+        # Ensure password was submitted
+        elif not password or not confirmation:
+            flash("Please enter a password and confirm it.")
+
+        # Ensure password and confirmation match
+        elif password != confirmation:
+            flash("Passwords do not match. Please re-enter the passwords and make sure they match")
+
+        # Insert the new user into the database
+        else:
+            # cursor.execute("INSERT INTO users(username, hash) values(?, ?)", (username, password))
+
+            # Log the user in and remember him
+            # session["user_id"] = db.execute("SELECT * FROM users WHERE username = ?", username)[0]["id"]
+
+            # Flash message the user upon successful registration
+            flash("Registration successful!")
+
+            # Redirect user to home page
+            return redirect("/")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    return render_template("register.html")
