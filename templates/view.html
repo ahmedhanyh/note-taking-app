@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %}{{ note[1] }}{% endblock %}
+{% block title %}{{ note[2] }}{% endblock %}
 
 {% block navlinks %}
     <div class="d-flex">
@@ -20,9 +20,9 @@
 {% block content %}
 <div class="card view">
     <div class="card-body">
-      <h5 class="card-title">{{ note[1] }}</h5>
-      <h6 class="card-subtitle mb-2 text-muted">{{ note[3] }}</h6>
-      <p class="card-text">{{ note[2] }}</p>
+      <h5 class="card-title">{{ note[2] }}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">{{ note[4] }}</h6>
+      <p class="card-text">{{ note[3] }}</p>
       <a href={{ "/edit/{}".format(note[0]) }} class="card-link">Edit</a>
       <a href={{ "/delete/{}".format(note[0]) }} class="card-link">Delete</a>
     </div>

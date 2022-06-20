@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %}Edit {{ note[1] }}{% endblock %}
+{% block title %}Edit {{ note[2] }}{% endblock %}
 
 {% block navlinks %}
     <div class="d-flex">
@@ -20,8 +20,8 @@
 {% block content %}
     <form class="note-form" action={{ "/edit/{}".format(note[0]) }} method="post">
         <input type="text" class="form-control mb-3" name="title" placeholder="Title"
-            value={{ request.form.get("title") if request.form.get("title") else note[1] }}>
-        <textarea class="form-control mb-3" name="content" rows="10" placeholder="Write something...">{{ request.form.get("content") if request.form.get("content") else note[2] }}</textarea>
+            value={{ request.form.get("title") if request.form.get("title") else note[2] }}>
+        <textarea class="form-control mb-3" name="content" rows="10" placeholder="Write something...">{{ request.form.get("content") if request.form.get("content") else note[3] }}</textarea>
         <button type="submit" class="btn btn-primary">Submit</button>
         <!-- <button type="submit" class="btn btn-danger">Cancel</button> -->
     </form>

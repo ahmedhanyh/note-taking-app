@@ -24,9 +24,11 @@ connection.commit()
 
 cursor.execute("""CREATE TABLE notes (
     id INTEGER PRIMARY KEY,
+    user_id INTEGER,
     title TEXT,
     content TEXT,
-    last_mod_date DATETIME DEFAULT CURRENT_TIMESTAMP
+    last_mod_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(user_id) REFERENCES users(id)
 )""")
 connection.commit()
 
@@ -34,28 +36,31 @@ def get_username():
     """Get username of logged in user"""
 
     # Query database for username of logged in user
-    cursor.execute("SELECT username FROM users WHERE id = ?", (session["user_id"],))
+    cursor.execute("SELECT username FROM users WHERE id = ?",
+                    (session["user_id"],))
 
     # Return the username
     return cursor.fetchone()[0]
 
 def add_note(title, content):
     with connection:
-        cursor.execute("INSERT INTO notes(title, content) VALUES(:title, :content)",
-        { 'title': title, 'content': content })
+        cursor.execute("INSERT INTO notes(user_id, title, content) VALUES(?, ?, ?)",
+                        (session["user_id"], title, content))
 
 def get_notes():
-    cursor.execute("SELECT * FROM notes")
+    cursor.execute("SELECT * FROM notes WHERE user_id = ?",
+                    (session["user_id"],))
     return cursor.fetchall()
 
 def get_note(id):
-    cursor.execute("SELECT * FROM notes WHERE id = ?", (id,))
+    cursor.execute("SELECT * FROM notes WHERE id = ? and user_id = ?",
+                    (id, session["user_id"]))
     return cursor.fetchone()
 
 def edit_note(id, title, content):
     with connection:
-        cursor.execute("UPDATE notes SET title = :title, content = :content WHERE id = :id",
-        { 'title': title, 'content': content, 'id': id })
+        cursor.execute("UPDATE notes SET title = ?, content = ? WHERE id = ?",
+                        (title, content, id))
 
 def delete_note(id):
     with connection:
@@ -102,6 +107,12 @@ def add():
 @login_required
 def view(note_id):
     note = get_note(note_id)
+    
+    # Check if user has such note
+    if not note:
+        flash("Note doesn't exist")
+        return redirect("/")
+
     return render_template("view.html", username=get_username(), note=note)
 
 @app.route("/edit/<int:note_id>", methods=["GET", "POST"])
@@ -121,6 +132,12 @@ def edit(note_id):
             return redirect("/")
 
     note = get_note(note_id)
+
+    # Check if user has such note
+    if not note:
+        flash("Note doesn't exist")
+        return redirect("/")
+
     return render_template("edit.html", username=get_username(), note=note)
 
 @app.route("/delete/<int:note_id>")
