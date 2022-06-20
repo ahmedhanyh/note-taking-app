@@ -30,6 +30,15 @@ cursor.execute("""CREATE TABLE notes (
 )""")
 connection.commit()
 
+def get_username():
+    """Get username of logged in user"""
+
+    # Query database for username of logged in user
+    cursor.execute("SELECT username FROM users WHERE id = ?", (session["user_id"],))
+
+    # Return the username
+    return cursor.fetchone()[0]
+
 def add_note(title, content):
     with connection:
         cursor.execute("INSERT INTO notes(title, content) VALUES(:title, :content)",
@@ -69,7 +78,7 @@ def login_required(f):
 @login_required
 def index():
     notes = get_notes()
-    return render_template("index.html", notes=notes)
+    return render_template("index.html", username=get_username(), notes=notes)
 
 @app.route("/add", methods=["GET", "POST"])
 @login_required
@@ -87,13 +96,13 @@ def add():
             flash("Note added successfully!")
             return redirect("/")
 
-    return render_template("add.html")
+    return render_template("add.html", username=get_username())
 
 @app.route("/view/<int:note_id>")
 @login_required
 def view(note_id):
     note = get_note(note_id)
-    return render_template("view.html", note=note)
+    return render_template("view.html", username=get_username(), note=note)
 
 @app.route("/edit/<int:note_id>", methods=["GET", "POST"])
 @login_required
@@ -112,7 +121,7 @@ def edit(note_id):
             return redirect("/")
 
     note = get_note(note_id)
-    return render_template("edit.html", note=note)
+    return render_template("edit.html", username=get_username(), note=note)
 
 @app.route("/delete/<int:note_id>")
 @login_required
