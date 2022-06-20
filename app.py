@@ -1,3 +1,4 @@
+import datetime
 import sqlite3
 from flask import Flask, render_template, request, redirect, flash, session
 from flask_session import Session
@@ -27,7 +28,7 @@ cursor.execute("""CREATE TABLE notes (
     user_id INTEGER,
     title TEXT,
     content TEXT,
-    last_mod_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    last_mod_date DATETIME,
     FOREIGN KEY(user_id) REFERENCES users(id)
 )""")
 connection.commit()
@@ -44,8 +45,11 @@ def get_username():
 
 def add_note(title, content):
     with connection:
-        cursor.execute("INSERT INTO notes(user_id, title, content) VALUES(?, ?, ?)",
-                        (session["user_id"], title, content))
+        timestamp_obj = datetime.datetime.now()
+        timestamp = timestamp_obj.strftime("%Y:%m:%d %H:%M:%S")
+
+        cursor.execute("INSERT INTO notes(user_id, title, content, last_mod_date) VALUES(?, ?, ?, ?)",
+                        (session["user_id"], title, content, timestamp))
 
 def get_notes():
     cursor.execute("SELECT * FROM notes WHERE user_id = ?",
@@ -59,8 +63,11 @@ def get_note(id):
 
 def edit_note(id, title, content):
     with connection:
-        cursor.execute("UPDATE notes SET title = ?, content = ? WHERE id = ?",
-                        (title, content, id))
+        timestamp_obj = datetime.datetime.now()
+        timestamp = timestamp_obj.strftime("%Y:%m:%d %H:%M:%S")
+
+        cursor.execute("UPDATE notes SET title = ?, content = ?, last_mod_date =? WHERE id = ?",
+                        (title, content, timestamp, id))
 
 def delete_note(id):
     with connection:
