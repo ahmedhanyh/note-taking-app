@@ -219,23 +219,24 @@ def login():
         # Ensure password was submitted
         elif not password:
             flash("Password must be provided")
-
-        # Query database for username
-        rows = cursor.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchall()
-
-        # Ensure username exists and password is correct
-        if len(rows) != 1 or not check_password_hash(rows[0][2], password):
-            flash("Invalid username and/or password")
-
+        
         else:
-            # Remember which user has logged in
-            session["user_id"] = rows[0][0]
+            # Query database for username
+            rows = cursor.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchall()
 
-            # Flash message the user if logged in successfully
-            flash("You logged in successfully!")
+            # Ensure username exists and password is correct
+            if len(rows) != 1 or not check_password_hash(rows[0][2], password):
+                flash("Invalid username and/or password")
 
-            # Redirect user to home page
-            return redirect("/")
+            else:
+                # Remember which user has logged in
+                session["user_id"] = rows[0][0]
+
+                # Flash message the user if logged in successfully
+                flash("You logged in successfully!")
+
+                # Redirect user to home page
+                return redirect("/")
 
     # User reached route via GET (as by clicking a link or via redirect)
     return render_template("login.html")
