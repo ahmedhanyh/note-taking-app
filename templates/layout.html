@@ -26,10 +26,7 @@
                     <a class="nav-link" href="#">About</a>
                   </li>
                 </ul>
-                <form class="d-flex">
-                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                {% block navlinks %}{% endblock %}
               </div>
             </div>
           </nav>
@@ -48,7 +45,7 @@
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
-                    {% if "must" in message %}
+                    {% if "must" in message or "Please" in message or "Invalid" in message or "exist" in message %}
                         <div class="alert alert-danger d-flex align-items-center justify-content-center fw-bold" role="alert">
                             <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
                             <div>

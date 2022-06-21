@@ -19,11 +19,8 @@ section {
     gap: 6vh;
 }
 
-#add-note-form {
+.note-form {
     width: 50%;
-}
-
-#add-note-form-btns {
     text-align: center;
 }
 

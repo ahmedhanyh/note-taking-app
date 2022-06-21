@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block navlinks %}
+    <div class="d-flex">
+        <a class="nav-link" aria-current="page" href="/login">Login</a>
+        <a class="nav-link" aria-current="page" href="/register">Register</a>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <form action="/register" method="post" style="text-align: center;">
+        <input type="text" class="form-control mb-3" name="username" placeholder="Username"
+            value="{{ request.form.get("username") if request.form.get("username") else "" }}">
+        <input type="password" class="form-control mb-3" name="password" placeholder="Password"
+            value="{{ request.form.get("password") if request.form.get("password") else "" }}">
+        <input type="password" class="form-control mb-3" name="confirmation" placeholder="Confirmation"
+            value="{{ request.form.get("confirmation") if request.form.get("confirmation") else "" }}">
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+{% endblock %}
