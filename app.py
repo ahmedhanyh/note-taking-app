@@ -182,7 +182,7 @@ def register():
 
         # Ensure password and confirmation match
         elif password != confirmation:
-            flash("Passwords do not match. Please re-enter the passwords and make sure they match")
+            flash("Passwords do not match. Please re-enter the passwords and make sure they match.")
 
         else:
             # Insert the new user into the database
@@ -245,3 +245,28 @@ def login():
 def logout():
     session.clear()
     return redirect("/login")
+
+@app.route("/password", methods=["GET", "POST"])
+@login_required
+def password():
+    if request.method == "POST":
+        current = request.form.get("current")
+        password = request.form.get("password")
+        confirmation = request.form.get("confirmation")
+
+        if not current:
+            flash("Current password must be provided")
+        elif not password or not confirmation:
+            flash("Please enter a password and confirm it.")
+        else:
+            hash = cursor.execute("SELECT hash FROM users WHERE id = ?", (session["user_id"],)).fetchone()[0]
+            if not check_password_hash(hash, current):
+                flash("Current password is not correct. Please make sure to enter it correctly.")
+            elif password != confirmation:
+                flash("Passwords do not match. Please re-enter the passwords and make sure they match.")
+            else:
+                cursor.execute("UPDATE users SET hash = ? WHERE id = ?", (generate_password_hash(password), session["user_id"]))
+                flash("Password updated!")
+                return redirect("/")
+
+    return render_template("password.html", username=get_username())
