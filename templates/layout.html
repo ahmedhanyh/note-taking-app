@@ -51,6 +51,7 @@
                             <div>
                                 {{ message }}
                             </div>
+                            <button type="button" class="btn-close" aria-label="Close"></button>
                         </div>
                     {% elif "success" in message or "update" in message %}
                         <div class="alert alert-success d-flex align-items-center justify-content-center fw-bold" role="alert">
@@ -58,6 +59,7 @@
                             <div>
                                 {{ message }}
                             </div>
+                            <button type="button" class="btn-close" aria-label="Close"></button>
                         </div>
                     {% endif %}
                 {% endfor %}
@@ -67,5 +69,6 @@
           {% block content %}{% endblock %}
       </section>
       <footer></footer>
+      <script src="../static/script.js"></script>
 </body>
 </html>

@@ -41,3 +41,7 @@ section {
 .card.view {
     width: 60%;
 }
+
+svg, .btn-close {
+    margin-left: auto;
+}
