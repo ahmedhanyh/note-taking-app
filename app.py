@@ -270,3 +270,14 @@ def password():
                 return redirect("/")
 
     return render_template("password.html", username=get_username())
+
+@app.route("/terminate")
+def terminate():
+    """Delete user account"""
+
+    with connection:
+        cursor.execute("DELETE FROM users WHERE id = ?", (session["user_id"],))
+        cursor.execute("DELETE FROM notes WHERE user_id = ?", (session["user_id"],))
+    
+    session.clear()
+    return redirect("/login")
