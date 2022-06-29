@@ -1,10 +1,8 @@
-import datetime
-import sqlite3
+from helpers import *
 from flask import Flask, render_template, request, redirect, flash, session
 from flask_session import Session
 from flask_cors import CORS
 from werkzeug.security import check_password_hash, generate_password_hash
-from functools import wraps
 
 app = Flask(__name__);
 CORS(app)
@@ -12,9 +10,6 @@ CORS(app)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-
-connection = sqlite3.connect("notesapp.db", check_same_thread=False)
-cursor = connection.cursor()
 
 # cursor.execute("""CREATE TABLE users (
 #     id INTEGER PRIMARY KEY,
@@ -33,65 +28,11 @@ cursor = connection.cursor()
 # )""")
 # connection.commit()
 
-def get_username():
-    """Get username of logged in user"""
-
-    # Query database for username of logged in user
-    cursor.execute("SELECT username FROM users WHERE id = ?",
-                    (session["user_id"],))
-
-    # Return the username
-    return cursor.fetchone()[0]
-
-def add_note(title, content):
-    with connection:
-        timestamp_obj = datetime.datetime.now()
-        timestamp = timestamp_obj.strftime("%Y:%m:%d %H:%M:%S")
-
-        cursor.execute("INSERT INTO notes(user_id, title, content, last_mod_date) VALUES(?, ?, ?, ?)",
-                        (session["user_id"], title, content, timestamp))
-
-def get_notes():
-    cursor.execute("SELECT * FROM notes WHERE user_id = ?",
-                    (session["user_id"],))
-    return cursor.fetchall()
-
-def get_note(id):
-    cursor.execute("SELECT * FROM notes WHERE id = ? and user_id = ?",
-                    (id, session["user_id"]))
-    return cursor.fetchone()
-
-def edit_note(id, title, content):
-    with connection:
-        timestamp_obj = datetime.datetime.now()
-        timestamp = timestamp_obj.strftime("%Y:%m:%d %H:%M:%S")
-
-        cursor.execute("UPDATE notes SET title = ?, content = ?, last_mod_date =? WHERE id = ?",
-                        (title, content, timestamp, id))
-
-def delete_note(id):
-    with connection:
-        cursor.execute("DELETE FROM notes WHERE id = ?", (id,))
-
-def login_required(f):
-    """
-    Decorate routes to require login.
-
-    https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
-    """
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if session.get("user_id") is None:
-            return redirect("/login")
-        return f(*args, **kwargs)
-    return decorated_function
-
 @app.route("/")
 @login_required
 def index():
     notes = get_notes()
     return render_template("index.html", username=get_username(), notes=notes)
-
 
 @app.route("/add", methods=["GET", "POST"])
 @login_required
@@ -111,7 +52,6 @@ def add():
 
     return render_template("add.html", username=get_username())
 
-
 @app.route("/view/<int:note_id>")
 @login_required
 def view(note_id):
@@ -123,7 +63,6 @@ def view(note_id):
         return redirect("/")
 
     return render_template("view.html", username=get_username(), note=note)
-
 
 @app.route("/edit/<int:note_id>", methods=["GET", "POST"])
 @login_required
