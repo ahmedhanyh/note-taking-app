@@ -13,25 +13,25 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-connection = sqlite3.connect(":memory:", check_same_thread=False)
+connection = sqlite3.connect("notesapp.db", check_same_thread=False)
 cursor = connection.cursor()
 
-cursor.execute("""CREATE TABLE users (
-    id INTEGER PRIMARY KEY,
-    username TEXT UNIQUE NOT NULL,
-    hash TEXT NOT NULL
-)""")
-connection.commit()
+# cursor.execute("""CREATE TABLE users (
+#     id INTEGER PRIMARY KEY,
+#     username TEXT UNIQUE NOT NULL,
+#     hash TEXT NOT NULL
+# )""")
+# connection.commit()
 
-cursor.execute("""CREATE TABLE notes (
-    id INTEGER PRIMARY KEY,
-    user_id INTEGER,
-    title TEXT,
-    content TEXT,
-    last_mod_date DATETIME,
-    FOREIGN KEY(user_id) REFERENCES users(id)
-)""")
-connection.commit()
+# cursor.execute("""CREATE TABLE notes (
+#     id INTEGER PRIMARY KEY,
+#     user_id INTEGER,
+#     title TEXT,
+#     content TEXT,
+#     last_mod_date DATETIME,
+#     FOREIGN KEY(user_id) REFERENCES users(id)
+# )""")
+# connection.commit()
 
 def get_username():
     """Get username of logged in user"""

@@ -45,3 +45,7 @@ section {
 svg, .btn-close {
     margin-left: auto;
 }
+
+textarea {
+    white-space: pre-wrap;
+}
