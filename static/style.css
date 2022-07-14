@@ -46,6 +46,9 @@ svg, .btn-close {
     margin-left: auto;
 }
 
-textarea {
-    white-space: pre-wrap;
+textarea.card-text {
+    padding: 0px;
+    border: 0px;
+    background-color: transparent;
+    resize: none;
 }
