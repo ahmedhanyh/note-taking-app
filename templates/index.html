@@ -20,13 +20,6 @@
 {% endblock %}
 
 {% block content %}
-    <a href="/add" id="add-note-btn" type="button" class="btn btn-primary btn-lg">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 18 18">
-            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
-        </svg>
-        Add a note
-    </a>
-    
     <div class="container-fluid">
         <div class="notes-cards row g-4">
             {% for note in notes %}
@@ -53,6 +46,15 @@
                     </div>
                 </div>
             {% endfor %}
+            <div class="col-3">
+                <div class="card btn btn-light">
+                    <a href="/add" class="stretched-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#0d6efd" class="bi bi-plus-circle-fill" viewBox="0 0 18 18">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
