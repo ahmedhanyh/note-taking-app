@@ -53,7 +53,11 @@ textarea.card-text {
     resize: none;
 }
 
-.row:last-child .card {
-    height: 100%;
-    justify-content: center;
+a[href="/add"],
+a[href="/add"]:hover {
+    color: white;
+}
+
+a[href="/add"] svg {
+    fill: white;
 }
