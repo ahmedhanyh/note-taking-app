@@ -33,7 +33,7 @@
                     <div class="card btn btn-light">
                         <div class="card-body">
                             <h5 class="card-title">{{ note[2] }}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{ note[4] }}</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">Created {{ note[0] | created_since }}</h6>
                             <p class="card-text text-truncate">{{ note[3] }}</p>
                             <a href={{ "/view/{}".format(note[0]) }} class="stretched-link"></a>
                             <a href={{ "/edit/{}".format(note[0]) }} class="card-link btn btn-outline-secondary" style="position: relative; z-index: 1;">

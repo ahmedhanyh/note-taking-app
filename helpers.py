@@ -2,6 +2,7 @@ import datetime
 import sqlite3
 from flask import render_template, request, redirect, session
 from functools import wraps
+import math
 
 def login_required(f):
     """
@@ -37,7 +38,7 @@ try:
             user_id INTEGER,
             title TEXT,
             content TEXT,
-            last_mod_date DATETIME,
+            creation_date DATETIME,
             FOREIGN KEY(user_id) REFERENCES users(id)
         )""")
 except:
@@ -56,9 +57,9 @@ def add_note(title, content):
     with connection:
         # Get timestamp for current time
         timestamp_obj = datetime.datetime.now()
-        timestamp = timestamp_obj.strftime("%Y:%m:%d %H:%M:%S")
+        timestamp = timestamp_obj.strftime("%I:%S %p - %b %d, %Y")
 
-        cursor.execute("INSERT INTO notes(user_id, title, content, last_mod_date) VALUES(?, ?, ?, ?)",
+        cursor.execute("INSERT INTO notes(user_id, title, content, creation_date) VALUES(?, ?, ?, ?)",
                         (session["user_id"], title, content, timestamp))
 
 def get_notes():
@@ -79,12 +80,8 @@ def edit_note(id, title, content):
     """Edit note and update database"""
 
     with connection:
-        # Get timestamp for current time
-        timestamp_obj = datetime.datetime.now()
-        timestamp = timestamp_obj.strftime("%Y:%m:%d %H:%M:%S")
-
-        cursor.execute("UPDATE notes SET title = ?, content = ?, last_mod_date =? WHERE id = ?",
-                        (title, content, timestamp, id))
+        cursor.execute("UPDATE notes SET title = ?, content = ? WHERE id = ?",
+                        (title, content, id))
 
 def delete_note(id):
     """Delete a note from database"""
@@ -92,3 +89,21 @@ def delete_note(id):
     # Connect to the database
     with connection:
         cursor.execute("DELETE FROM notes WHERE id = ?", (id,))
+
+def created_since(note_id):
+    cursor.execute("SELECT creation_date FROM notes WHERE id = ?", (note_id,))
+    creation_date = datetime.datetime.strptime(cursor.fetchone()[0], "%I:%S %p - %b %d, %Y")
+    time_since = datetime.datetime.now() - creation_date
+
+    time_since_in_years = math.floor(time_since.days / 365)
+    if time_since_in_years:
+        return f"{time_since_in_years} years ago"
+    
+    time_since_in_months = math.floor(time_since.days / 30)
+    if time_since_in_months:
+        return f"{time_since_in_months} months ago"
+    
+    if time_since.days:
+        return f"{time_since.days} days ago"
+
+    return "Less than a day ago"
