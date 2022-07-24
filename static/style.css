@@ -24,14 +24,6 @@ section {
     text-align: center;
 }
 
-#notes-cards {
-    display: grid;
-    grid-template-columns: repeat(4, 18rem);
-    grid-auto-rows: 16vh;
-    column-gap: 60px;
-    row-gap: 60px;
-}
-
 .card-text.index {
     white-space: nowrap;
     overflow: hidden;
