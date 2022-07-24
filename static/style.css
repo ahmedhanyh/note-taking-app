@@ -53,3 +53,8 @@ a[href="/add"]:hover {
 a[href="/add"] svg {
     fill: white;
 }
+
+h1 + h2 a {
+    text-decoration: none;
+    color: black;
+}

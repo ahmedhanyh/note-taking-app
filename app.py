@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from helpers import *
 from flask import Flask, render_template, request, redirect, flash, session
 from flask_session import Session
@@ -27,6 +28,11 @@ def index():
 
     # User reached route via GET (as by clicking a link or via redirect)
     return render_template("index.html", username=get_username(), notes=notes)
+
+@app.route("/about")
+@login_required
+def about():
+    return render_template("about.html", username=get_username())
 
 @app.route("/add", methods=["GET", "POST"])
 @login_required
