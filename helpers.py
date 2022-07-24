@@ -106,4 +106,4 @@ def created_since(note_id):
     if time_since.days:
         return f"{time_since.days} days ago"
 
-    return "Less than a day ago"
+    return "less than a day ago"

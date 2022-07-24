@@ -23,7 +23,7 @@
 <div class="card view">
     <div class="card-body">
         <h5 class="card-title">{{ note[2] }}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">Created {{ note[0] | created_since }}</h6>
+        <h6 class="card-subtitle mb-2 text-muted" data-bs-toggle="tooltip" data-bs-placement="left" title="{{ note[4] }}">Created {{ note[0] | created_since }}</h6>
         <textarea class="form-control card-text my-3" name="content" rows="16" style="background-color: transparent;" disabled>{{ note[3] }}</textarea>
         <a href={{ "/edit/{}".format(note[0]) }} class="card-link btn btn-secondary" style="position: relative; z-index: 1;">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 18 18">
