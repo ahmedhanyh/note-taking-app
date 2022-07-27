@@ -54,7 +54,25 @@ a[href="/add"] svg {
     fill: white;
 }
 
-h1 + h2 a {
+h1 ~ h2 {
+    text-align: center;
+}
+
+h1 ~ h2 a {
     text-decoration: none;
     color: black;
+}
+
+.link-svg-container {
+    display: inline-block;
+    position: relative;
+    top: -2px;
+}
+
+.youtube.link-svg-container {
+    top: 0px;
+}
+
+#youtube-link:hover {
+    color: red;
 }

@@ -97,13 +97,19 @@ def created_since(note_id):
 
     time_since_in_years = math.floor(time_since.days / 365)
     if time_since_in_years:
+        if time_since_in_years == 1:
+            return "a year ago"
         return f"{time_since_in_years} years ago"
     
     time_since_in_months = math.floor(time_since.days / 30)
     if time_since_in_months:
+        if time_since_in_months == 1:
+            return "a month ago"
         return f"{time_since_in_months} months ago"
     
     if time_since.days:
+        if time_since.days == 1:
+            return "a day ago"
         return f"{time_since.days} days ago"
 
     return "less than a day ago"
