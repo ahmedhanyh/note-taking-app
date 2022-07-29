@@ -15,18 +15,22 @@ const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl)
 })
 
-const pageTitle = document.querySelector("title").textContent;
-const homeLink = document.querySelector(".nav-link[href='/']");
-const aboutLink = document.querySelector(".nav-link[href='/about']");
 
-// Toggle nav-links active state
-if (pageTitle === "Homepage") {
-  aboutLink.classList.remove("active");
-  homeLink.classList.add("active");
-} else if (pageTitle === "About") {
-  homeLink.classList.remove("active");
-  aboutLink.classList.add("active");
+const pageTitle = document.querySelector("title").textContent;
+
+if (["Homepage", "About", "Login", "Register"].includes(pageTitle)) {
+  const hrefValue = pageTitle === 'Homepage' ? '' : pageTitle.toLowerCase();
+  const currentNavLink = document.querySelector(`.nav-link[href='/${hrefValue}']`);
+  
+  // Toggle nav-links active state
+  document.querySelectorAll(".nav-link").forEach(link => {
+    link.classList.remove("active");
+    link.removeAttribute("aria-current");
+  });
+  currentNavLink.classList.add("active");
+  currentNavLink.setAttribute("aria-current", "page");
 }
+
 
 // A function that stores the chosen theme
 // in browser's localStorage

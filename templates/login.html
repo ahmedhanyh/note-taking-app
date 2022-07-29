@@ -1,8 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %}
-    Login
-{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block navlinks %}
     <img src="../static/images/moon-fill.svg"
@@ -10,8 +8,8 @@
         class="btn switch-theme-btn"
         data-bs-toggle="tooltip" data-bs-placement="bottom" title="Toggle Dark/Light theme" />
     <div class="d-flex">
-        <a class="nav-link" aria-current="page" href="/login">Login</a>
-        <a class="nav-link" aria-current="page" href="/register">Register</a>
+        <a class="nav-link" href="/login">Login</a>
+        <a class="nav-link" href="/register">Register</a>
     </div>
 {% endblock %}
 

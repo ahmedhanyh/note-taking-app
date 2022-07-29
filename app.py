@@ -5,7 +5,7 @@ from flask_cors import CORS
 from werkzeug.security import check_password_hash, generate_password_hash
 
 # Configure application
-app = Flask(__name__);
+app = Flask(__name__)
 
 # Enable CORS mechanism in application
 CORS(app)

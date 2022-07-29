@@ -93,3 +93,23 @@ body.bg-dark input::placeholder,
 body.bg-dark textarea::placeholder {
     color: rgb(180, 180, 180);
 }
+
+
+body.bg-dark .nav-link[href='/login'],
+body.bg-dark .nav-link[href='/register'] {
+    color: #9cc4ff;
+}
+
+body.bg-dark .nav-link[href='/login'].active,
+body.bg-dark .nav-link[href='/login']:hover,
+body.bg-dark .nav-link[href='/register'].active,
+body.bg-dark .nav-link[href='/register']:hover {
+    color: #5097ff;
+}
+
+.nav-link[href='/login'].active,
+.nav-link[href='/login']:hover,
+.nav-link[href='/register'].active,
+.nav-link[href='/register']:hover {
+    color: #003e99;
+}
