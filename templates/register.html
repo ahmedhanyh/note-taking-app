@@ -5,6 +5,9 @@
 {% endblock %}
 
 {% block navlinks %}
+    <img src="../static/images/moon-fill.svg"
+        alt="An image of a moon when in light mode and of a sun when in dark mode"
+        class="btn switch-theme-btn" />
     <div class="d-flex">
         <a class="nav-link" aria-current="page" href="/login">Login</a>
         <a class="nav-link" aria-current="page" href="/register">Register</a>
@@ -13,11 +16,14 @@
 
 {% block content %}
     <form action="/register" method="post" style="text-align: center;">
-        <input type="text" class="form-control mb-3" name="username" placeholder="Username"
+        <input type="text" class="form-control mb-3"
+                name="username" placeholder="Username" autocomplete="off"
             value="{{ request.form.get("username") if request.form.get("username") else "" }}">
-        <input type="password" class="form-control mb-3" name="password" placeholder="Password"
+        <input type="password" class="form-control mb-3"
+                name="password" placeholder="Password" autocomplete="off"
             value="{{ request.form.get("password") if request.form.get("password") else "" }}">
-        <input type="password" class="form-control mb-3" name="confirmation" placeholder="Confirmation"
+        <input type="password" class="form-control mb-3"
+                name="confirmation" placeholder="Confirmation" autocomplete="off"
             value="{{ request.form.get("confirmation") if request.form.get("confirmation") else "" }}">
         <button type="submit" class="btn btn-primary">Register</button>
     </form>
