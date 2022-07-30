@@ -4,19 +4,6 @@ from flask import render_template, request, redirect, session
 from functools import wraps
 import math
 
-def login_required(f):
-    """
-    Decorate routes to require login.
-
-    https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
-    """
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if session.get("user_id") is None:
-            return redirect("/login")
-        return f(*args, **kwargs)
-    return decorated_function
-
 # Connect to the database "notesapp.db"
 connection = sqlite3.connect("notesapp.db", check_same_thread=False)
 
@@ -89,6 +76,19 @@ def delete_note(id):
     # Connect to the database
     with connection:
         cursor.execute("DELETE FROM notes WHERE id = ?", (id,))
+
+def login_required(f):
+    """
+    Decorate routes to require login.
+
+    https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("user_id") is None:
+            return redirect("/login")
+        return f(*args, **kwargs)
+    return decorated_function
 
 def created_since(note_id):
     cursor.execute("SELECT creation_date FROM notes WHERE id = ?", (note_id,))

@@ -66,7 +66,6 @@ const allParagraphs = document.querySelectorAll("p");
 const allInputFields = [...document.querySelectorAll("input"), ...document.querySelectorAll("textarea")];
 const allLinks = [...document.querySelectorAll("h2 a")];
 const dropdownMenu = document.querySelector(".dropdown-menu");
-const dropdownItems = document.querySelectorAll(".dropdown-item");
 const githubBtn = document.querySelector(".btn[href*='github']");
 const modal = document.querySelector(".modal-content");
 
@@ -95,12 +94,8 @@ if (localStorage.getItem("currentTheme") === "dark") {
   navBar.classList.remove("bg-light");
 
   if (dropdownMenu) {
-    dropdownMenu.classList.add("bg-dark");
-  
-    dropdownItems.forEach(item => {
-      item.classList.add("text-light");
-    });
-  }
+    dropdownMenu.classList.add("dropdown-menu-dark");
+  };
 
   homeCards.forEach(card => {
     card.classList.add("border-light");
@@ -110,12 +105,12 @@ if (localStorage.getItem("currentTheme") === "dark") {
   viewCards.forEach(card => {
     card.classList.add("border-light");
     card.classList.add("bg-dark");
-  })
+  });
 
   outlineBtns.forEach(btn => {
     let startIndex = findSubStr(btn.className, "outline");
     btn.className = btn.className.slice(0, startIndex) + btn.className.slice(startIndex + 8);
-  })
+  });
 
   allInputFields.forEach(inputField => {
     inputField.classList.add("bg-dark");
@@ -153,12 +148,8 @@ if (localStorage.getItem("currentTheme") === "dark") {
   navBar.classList.add("bg-light");
 
   if (dropdownMenu) {
-    dropdownMenu.classList.remove("bg-dark");
-  
-    dropdownItems.forEach(item => {
-      item.classList.remove("text-light");
-    });
-  }
+    dropdownMenu.classList.remove("dropdown-menu-dark");
+  };
 
   homeCards.forEach(card => {
     card.classList.remove("border-light");
@@ -168,12 +159,12 @@ if (localStorage.getItem("currentTheme") === "dark") {
   viewCards.forEach(card => {
     card.classList.remove("border-light");
     card.classList.remove("bg-dark");
-  })
+  });
 
   outlineBtns.forEach(btn => {
     let startIndex = findSubStr(btn.className, "btn-")
     btn.className = btn.className.slice(0, startIndex + 4) + "outline-" + btn.className.slice(startIndex + 4 + 8);
-  })
+  });
 
   allInputFields.forEach(inputField => {
     inputField.classList.remove("bg-dark");
@@ -199,5 +190,5 @@ if (localStorage.getItem("currentTheme") === "dark") {
   if (githubBtn) {
     githubBtn.classList.add("btn-dark");
     githubBtn.classList.remove("btn-outline-light");
-  }
+  };
 }
