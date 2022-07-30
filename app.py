@@ -171,7 +171,8 @@ def register():
 
         else:
             # Insert the new user into the database
-            cursor.execute("INSERT INTO users(username, hash) values(?, ?)", (username, generate_password_hash(password)))
+            with connection:
+                cursor.execute("INSERT INTO users(username, hash) values(?, ?)", (username, generate_password_hash(password)))
 
             # Log the user in and remember him
             session["user_id"] = cursor.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()[0]
@@ -271,7 +272,8 @@ def password():
             # In case a new password and its confirmation were submitted
             else:
                 # Update user password in database
-                cursor.execute("UPDATE users SET hash = ? WHERE id = ?", (generate_password_hash(password), session["user_id"]))
+                with connection:
+                    cursor.execute("UPDATE users SET hash = ? WHERE id = ?", (generate_password_hash(password), session["user_id"]))
 
                 # Inform the user that the action succeeded
                 flash("Password updated!")
