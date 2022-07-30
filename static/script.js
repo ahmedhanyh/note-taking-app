@@ -58,13 +58,9 @@ if (!localStorage.getItem("currentTheme")) {
 }
 
 const navBar = document.querySelector(".navbar");
-const homeCards = document.querySelectorAll(".row .card");
-const viewCards = document.querySelectorAll(".card.view");
+const allCards = document.querySelectorAll(".card");
 const outlineBtns = document.querySelectorAll("[class*='btn-outline']");
-const allHeadings = [...document.querySelectorAll("h1"), ...document.querySelectorAll("h2"), ...document.querySelectorAll("h5"), ...document.querySelectorAll("h6")];
-const allParagraphs = document.querySelectorAll("p");
 const allInputFields = [...document.querySelectorAll("input"), ...document.querySelectorAll("textarea")];
-const allLinks = [...document.querySelectorAll("h2 a")];
 const dropdownMenu = document.querySelector(".dropdown-menu");
 const githubBtn = document.querySelector(".btn[href*='github']");
 const modal = document.querySelector(".modal-content");
@@ -97,14 +93,10 @@ if (localStorage.getItem("currentTheme") === "dark") {
     dropdownMenu.classList.add("dropdown-menu-dark");
   };
 
-  homeCards.forEach(card => {
+  allCards.forEach(card => {
     card.classList.add("border-light");
     card.classList.add("bg-dark");
-  });
-
-  viewCards.forEach(card => {
-    card.classList.add("border-light");
-    card.classList.add("bg-dark");
+    card.classList.add("text-light");
   });
 
   outlineBtns.forEach(btn => {
@@ -117,18 +109,6 @@ if (localStorage.getItem("currentTheme") === "dark") {
     inputField.classList.add("text-light");
   });
 
-  allHeadings.forEach(heading => {
-    heading.classList.add("text-light");
-  });
-
-  allParagraphs.forEach(paragraph => {
-    paragraph.classList.add("text-light");
-  });
-
-  allLinks.forEach(link => {
-    link.classList.add("text-light");
-  });
-
   modal.classList.add("bg-dark");
   modal.classList.add("text-light");
   modal.querySelector(".btn-close").classList.add("bg-white");
@@ -136,7 +116,7 @@ if (localStorage.getItem("currentTheme") === "dark") {
   if (githubBtn) {
     githubBtn.classList.remove("btn-dark");
     githubBtn.classList.add("btn-outline-light");
-  }
+  };
 } else {
   switchThemeBtn.src = "../static/images/moon.svg";
 
@@ -151,14 +131,10 @@ if (localStorage.getItem("currentTheme") === "dark") {
     dropdownMenu.classList.remove("dropdown-menu-dark");
   };
 
-  homeCards.forEach(card => {
+  allCards.forEach(card => {
     card.classList.remove("border-light");
     card.classList.remove("bg-dark");
-  });
-
-  viewCards.forEach(card => {
-    card.classList.remove("border-light");
-    card.classList.remove("bg-dark");
+    card.classList.remove("text-light");
   });
 
   outlineBtns.forEach(btn => {
@@ -169,18 +145,6 @@ if (localStorage.getItem("currentTheme") === "dark") {
   allInputFields.forEach(inputField => {
     inputField.classList.remove("bg-dark");
     inputField.classList.remove("text-light");
-  });
-
-  allHeadings.forEach(heading => {
-    heading.classList.remove("text-light");
-  });
-
-  allParagraphs.forEach(paragraph => {
-    paragraph.classList.remove("text-light");
-  });
-
-  allLinks.forEach(link => {
-    link.classList.remove("text-light");
   });
 
   modal.classList.remove("bg-dark");

@@ -54,17 +54,26 @@ a[href="/add"] svg {
     fill: white;
 }
 
-h1 ~ h2 {
+h2 {
     text-align: center;
 }
 
-h1 ~ h2 a {
+h2 a {
     text-decoration: none;
     color: black;
 }
 
-h1 ~ h2 a:hover {
+h2 a:hover {
     color: #0a58ca !important;
+}
+
+body.bg-dark h1,
+body.bg-dark h2 {
+    color: rgb(248, 249, 250);
+}
+
+body.bg-dark h2 a {
+    color: rgb(248, 249, 250);
 }
 
 .link-svg-container {
@@ -94,22 +103,22 @@ body.bg-dark textarea::placeholder {
     color: rgb(180, 180, 180);
 }
 
+.nav-link[href='/login'].active,
+.nav-link[href='/login']:hover,
+.nav-link[href='/register'].active,
+.nav-link[href='/register']:hover {
+    color: #003e99;
+}
 
+/* nav-links in dark mode */
 body.bg-dark .nav-link[href='/login'],
 body.bg-dark .nav-link[href='/register'] {
-    color: #9cc4ff;
+    color: #5097ff;
 }
 
 body.bg-dark .nav-link[href='/login'].active,
 body.bg-dark .nav-link[href='/login']:hover,
 body.bg-dark .nav-link[href='/register'].active,
 body.bg-dark .nav-link[href='/register']:hover {
-    color: #5097ff;
-}
-
-.nav-link[href='/login'].active,
-.nav-link[href='/login']:hover,
-.nav-link[href='/register'].active,
-.nav-link[href='/register']:hover {
-    color: #003e99;
+    color: #9cc4ff;
 }
