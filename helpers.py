@@ -1,6 +1,6 @@
 import datetime
 import sqlite3
-from flask import render_template, request, redirect, session
+from flask import request, redirect, session
 from functools import wraps
 import math
 
@@ -29,8 +29,8 @@ try:
             FOREIGN KEY(user_id) REFERENCES users(id)
         )""")
 
-        cursor.execute("CREATE INDEX 'user_id_index' ON 'users' ('id')")
-        cursor.execute("CREATE INDEX 'note_id_index' ON 'notes' ('id')")
+        cursor.execute("CREATE UNIQUE INDEX 'user_id_index' ON 'users' ('id')")
+        cursor.execute("CREATE UNIQUE INDEX 'note_id_index' ON 'notes' ('id')")
 except:
     pass
 
@@ -47,7 +47,7 @@ def add_note(title, content):
     with connection:
         # Get timestamp for current time
         timestamp_obj = datetime.datetime.now()
-        timestamp = timestamp_obj.strftime("%I:%S %p - %b %d, %Y")
+        timestamp = timestamp_obj.strftime("%I:%M %p - %b %d, %Y")
 
         cursor.execute("INSERT INTO notes(user_id, title, content, creation_date) VALUES(?, ?, ?, ?)",
                         (session["user_id"], title, content, timestamp))
@@ -95,7 +95,7 @@ def login_required(f):
 
 def created_since(note_id):
     cursor.execute("SELECT creation_date FROM notes WHERE id = ?", (note_id,))
-    creation_date = datetime.datetime.strptime(cursor.fetchone()[0], "%I:%S %p - %b %d, %Y")
+    creation_date = datetime.datetime.strptime(cursor.fetchone()[0], "%I:%M %p - %b %d, %Y")
     time_since = datetime.datetime.now() - creation_date
 
     time_since_in_years = math.floor(time_since.days / 365)
