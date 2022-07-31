@@ -28,6 +28,9 @@ try:
             creation_date DATETIME,
             FOREIGN KEY(user_id) REFERENCES users(id)
         )""")
+
+        cursor.execute("CREATE INDEX 'user_id_index' ON 'users' ('id')")
+        cursor.execute("CREATE INDEX 'note_id_index' ON 'notes' ('id')")
 except:
     pass
 
