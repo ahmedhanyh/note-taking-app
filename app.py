@@ -1,5 +1,6 @@
+import sqlite3
 from helpers import *
-from flask import Flask, render_template, request, redirect, flash, session
+from flask import Flask, render_template, request, redirect, flash, session, g
 from flask_session import Session
 from flask_cors import CORS
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -16,6 +17,67 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 app.jinja_env.filters["created_since"] = created_since
+
+# Connect to the database "notesapp.db"
+connection = sqlite3.connect("notesapp.db", check_same_thread=False)
+
+# Create a cursor instance which allows us to execute SQL queries on "notesapp.db"
+cursor = connection.cursor()
+
+# Silence any error that may arise when creating tables
+# (in this case creating a table that already exists will throw an error)
+try:
+    with connection:
+        cursor.execute("""CREATE TABLE users (
+            id INTEGER PRIMARY KEY,
+            username TEXT UNIQUE NOT NULL,
+            hash TEXT NOT NULL
+        )""")
+
+        cursor.execute("""CREATE TABLE notes (
+            id INTEGER PRIMARY KEY,
+            user_id INTEGER,
+            title TEXT,
+            content TEXT,
+            creation_date DATETIME,
+            FOREIGN KEY(user_id) REFERENCES users(id)
+        )""")
+
+        cursor.execute("CREATE UNIQUE INDEX 'user_id_index' ON 'users' ('id')")
+        cursor.execute("CREATE UNIQUE INDEX 'note_id_index' ON 'notes' ('id')")
+except:
+    pass
+
+# Close the database connection
+connection.close()
+
+@app.before_request
+def open_db_conn():
+    """
+    open_db_conn() executes before processing a request.
+    It opens a database connection.
+    """
+
+    # Connect to the database "notesapp.db"
+    conn = sqlite3.connect("notesapp.db", check_same_thread=False)
+
+    # Create a cursor instance which allows us to execute SQL queries on "notesapp.db"
+    cur = conn.cursor()
+
+    # Create connection and cursor variables on the global g object
+    g.connection = conn
+    g.cursor = cur
+
+@app.after_request
+def close_db_conn(response):
+    """
+    close_db_conn() executes after processing a request.
+    It closes the database connection.
+    """
+
+    # Close database connection
+    g.connection.close()
+    return response
 
 @app.route("/")
 @login_required
@@ -158,7 +220,7 @@ def register():
             flash("Please choose a username")
 
         # Ensure username does not already exist
-        elif len(cursor.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchall()) == 1:
+        elif len(g.cursor.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchall()) == 1:
             flash("Username already taken. Please choose a different username.")
 
         # Ensure password was submitted
@@ -171,11 +233,11 @@ def register():
 
         else:
             # Insert the new user into the database
-            with connection:
-                cursor.execute("INSERT INTO users(username, hash) values(?, ?)", (username, generate_password_hash(password)))
+            with g.connection:
+                g.cursor.execute("INSERT INTO users(username, hash) values(?, ?)", (username, generate_password_hash(password)))
 
             # Log the user in and remember him
-            session["user_id"] = cursor.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()[0]
+            session["user_id"] = g.cursor.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()[0]
 
             # Inform the user that the action succeeded
             flash("Registration successful!")
@@ -208,7 +270,7 @@ def login():
         
         else:
             # Query database for username
-            rows = cursor.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchall()
+            rows = g.cursor.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchall()
 
             # Ensure username exists and password is correct
             if len(rows) != 1 or not check_password_hash(rows[0][2], password):
@@ -259,7 +321,7 @@ def password():
         # In case both current and new password were submitted
         else:
             # Retrieve current password hash value from database
-            hash = cursor.execute("SELECT hash FROM users WHERE id = ?", (session["user_id"],)).fetchone()[0]
+            hash = g.cursor.execute("SELECT hash FROM users WHERE id = ?", (session["user_id"],)).fetchone()[0]
 
             # Ensure new password is not the same as current one
             if not check_password_hash(hash, current):
@@ -272,8 +334,8 @@ def password():
             # In case a new password and its confirmation were submitted
             else:
                 # Update user password in database
-                with connection:
-                    cursor.execute("UPDATE users SET hash = ? WHERE id = ?", (generate_password_hash(password), session["user_id"]))
+                with g.connection:
+                    g.cursor.execute("UPDATE users SET hash = ? WHERE id = ?", (generate_password_hash(password), session["user_id"]))
 
                 # Inform the user that the action succeeded
                 flash("Password updated!")
@@ -288,12 +350,12 @@ def password():
 def terminate():
     """Delete user account"""
 
-    with connection:
+    with g.connection:
         # Delete user information from database
-        cursor.execute("DELETE FROM users WHERE id = ?", (session["user_id"],))
+        g.cursor.execute("DELETE FROM users WHERE id = ?", (session["user_id"],))
 
         # Delete all user notes from database
-        cursor.execute("DELETE FROM notes WHERE user_id = ?", (session["user_id"],))
+        g.cursor.execute("DELETE FROM notes WHERE user_id = ?", (session["user_id"],))
     
     # Redirect user to logout page (Log user out)
     return redirect("/logout")
