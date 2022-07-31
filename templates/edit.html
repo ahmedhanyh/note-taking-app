@@ -9,7 +9,7 @@
 {% block content %}
     <form class="note-form" action={{ "/edit/{}".format(note[0]) }} method="post">
         <input type="text" class="form-control mb-3" name="title" placeholder="Title"
-            value={{ request.form.get("title") if request.form.get("title") else note[2] }}>
+            value="{{ request.form.get("title") if request.form.get("title") else note[2] }}">
         <textarea class="form-control mb-3" name="content" rows="16" placeholder="Write something...">{{ request.form.get("content") if request.form.get("content") else note[3] }}</textarea>
         <button type="submit" class="btn btn-success">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 20 20">
