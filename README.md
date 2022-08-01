@@ -3,16 +3,22 @@
 
 I'll write about the project in detail in the next few sections.
 
-## Root directory
-**This directory contains all of the project's files and subdirectories.**
-
 ## 'templates' directory
 **This one contains all the templates (HTML files) that the web application will render.**
 
+I've used the Jinja templating engine (which is the default templating engine that comes integrated with flask) to create the templates. All templates extend the 'layout.html' template. I've used some bootstrap components like a navbar, cards, buttons, a dropdown menu, a modal, and alerts. I've also added some custom styling using css.
+
 ## 'static' directory
 **It contains stylesheets (CSS files), scripts (JavaScript files), and images.**
+### style.css
+**This stylesheet contains all the custom styles that were applied to the html pages.**
 
-### Dark/Light mode implementation
+There are rulesets (blocks of property: value pairs 'aka delcarations') that manage the page's layout using flexbox, replace overflowing text with ellipses, add hover effects on elements, and change elements' background and text colors when in dark mode. To make the input fields' placeholder text color lighter in dark mode, I've used the ```::placeholder``` pseudo-element.
+
+### script.js
+**The script is responsible for enabling bootstrap tooltips, being able to hide alerts, highlighting an active navbar item, and switching the dark/light theme.**
+
+#### Dark/Light mode implementation
 
 In 'script.js', we define a property (variable inside an object in JavaScript) on the localStorage object that stores the current theme (either 'light' or 'dark')
 ```javascript
@@ -37,9 +43,9 @@ function switchTheme() {
 const switchThemeBtn = document.querySelector(".switch-theme-btn");
 switchThemeBtn.addEventListener("click", switchTheme);
 ```
-all it does is change the "currentTheme" property's value to either "light" or "dark" depending on its current value.
+all it does is change the "currentTheme" property's value to either "light" or "dark" depending on its current value, then reloads the page.
 
-Finally, we check which theme the user has chosen and display the page accordingly
+Finally, after selecting the DOM elements we'll need to update, we check which theme the user has chosen and apply the styles to these elements accordingly
 ```javascript
 if (localStorage.getItem("currentTheme") === "dark") {
 .
@@ -112,7 +118,7 @@ connection.close()
 we'll open it again when we need it (before processing a request).
 
 Next, we create two functions:
-1. ```open_db_conn()``` executes before a request is processed (this is done by decorating the function with ```@before_request```). It creates a database connection and a cursor object and makes them available globally by adding them to the global ```g``` object provided by flask.
+1. ```open_db_conn()``` executes before a request is processed (this is done by decorating the function with ```@before_request```). It opens a database connection, creates a cursor object and makes them available globally by adding them to the global ```g``` object provided by flask.
 1. ```close_db_conn()``` executes after a request has been processed (this is done by decorating the function with ```@after_request```). It closes the database connection.
 
 The rest of the file contains all the routes' definitions and their view functions. The view functions contain code that makes CRUD operations on the database, server-side validation or just renders a template. Routes that require the user to be logged in are decorated with the ```@login_required``` decorator. This summarizes this part of the file, we won't need to go into detail about each route definition and view function.
