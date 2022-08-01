@@ -103,6 +103,10 @@ body.bg-dark textarea::placeholder {
     color: rgb(180, 180, 180);
 }
 
+body.bg-dark h6 {
+    color: rgb(160, 160, 160) !important;
+}
+
 .nav-link[href='/login'].active,
 .nav-link[href='/login']:hover,
 .nav-link[href='/register'].active,
