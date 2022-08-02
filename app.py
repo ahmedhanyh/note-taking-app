@@ -217,7 +217,11 @@ def register():
 
         # Ensure username was submitted
         if not username:
-            flash("Please choose a username")
+            flash("Please choose a username.")
+        
+        # Ensure username doesn't contain spaces
+        elif " " in username:
+            flash("Username must not contain spaces.")
 
         # Ensure username does not already exist
         elif len(g.cursor.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchall()) == 1:
