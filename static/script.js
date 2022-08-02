@@ -94,7 +94,6 @@ if (localStorage.getItem("currentTheme") === "dark") {
   };
 
   allCards.forEach(card => {
-    card.classList.add("border-light");
     card.classList.add("bg-dark");
     card.classList.add("text-light");
   });
@@ -132,7 +131,6 @@ if (localStorage.getItem("currentTheme") === "dark") {
   };
 
   allCards.forEach(card => {
-    card.classList.remove("border-light");
     card.classList.remove("bg-dark");
     card.classList.remove("text-light");
   });

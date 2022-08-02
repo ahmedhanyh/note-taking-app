@@ -90,8 +90,12 @@ body.bg-dark h2 a {
     color: red !important;
 }
 
-.card.btn-light.bg-dark:hover {
+.card.bg-dark {
     border-color: #6c757d !important;
+}
+
+.card.btn-light.bg-dark:hover {
+    border-color: #f8f9fa !important;
 }
 
 .dropdown-item.text-light:hover {
